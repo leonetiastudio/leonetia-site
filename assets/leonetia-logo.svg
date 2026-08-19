@@ -1,0 +1,23 @@
+<svg width="750" height="180" viewBox="0 0 750 180" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">LEONETIA Estudio Creativo</title>
+  <desc id="desc">Logotipo vectorial de LEONETIA con monograma geometricamente entrelazado y wordmark premium.</desc>
+  <rect width="750" height="180" fill="none"/>
+  <g transform="translate(24 26)">
+    <path d="M55 14L14 55L55 96L96 55L55 14Z" stroke="#D8FF68" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M55 14V96" stroke="#F7F3EA" stroke-width="7" stroke-linecap="round"/>
+    <path d="M32 78H83" stroke="#F7F3EA" stroke-width="7" stroke-linecap="round"/>
+    <path d="M96 55H125" stroke="#36D6C9" stroke-width="7" stroke-linecap="round"/>
+    <circle cx="132" cy="55" r="7" fill="#36D6C9"/>
+  </g>
+  <g fill="#F7F3EA">
+    <path d="M190.24 51.5H203.28V115.16H243.28V126.5H190.24V51.5Z"/>
+    <path d="M260.12 51.5H313.34V62.84H273.16V82.82H308.78V93.88H273.16V115.16H314.08V126.5H260.12V51.5Z"/>
+    <path d="M365.18 127.84C343.02 127.84 326.38 111.68 326.38 89C326.38 66.32 343.02 50.16 365.18 50.16C387.34 50.16 403.98 66.32 403.98 89C403.98 111.68 387.34 127.84 365.18 127.84ZM365.18 116.16C379.9 116.16 390.34 105.2 390.34 89C390.34 72.8 379.9 61.84 365.18 61.84C350.46 61.84 340.02 72.8 340.02 89C340.02 105.2 350.46 116.16 365.18 116.16Z"/>
+    <path d="M421.54 51.5H434.58L469.62 104.54V51.5H482.66V126.5H469.62L434.58 73.58V126.5H421.54V51.5Z"/>
+    <path d="M503.71 51.5H556.93V62.84H516.75V82.82H552.37V93.88H516.75V115.16H557.67V126.5H503.71V51.5Z"/>
+    <path d="M590.18 62.84H566.7V51.5H626.7V62.84H603.22V126.5H590.18V62.84Z"/>
+    <path d="M642.11 51.5H655.15V126.5H642.11V51.5Z"/>
+    <path d="M702.52 109.58H672.34L666.46 126.5H652.7L680.58 51.5H694.78L722.66 126.5H708.4L702.52 109.58ZM687.42 66.08L676.18 98.72H698.68L687.42 66.08Z"/>
+  </g>
+  <text x="191" y="151" fill="#36D6C9" font-family="Inter, Arial, sans-serif" font-size="19" font-weight="600" letter-spacing="4">ESTUDIO CREATIVO</text>
+</svg>
