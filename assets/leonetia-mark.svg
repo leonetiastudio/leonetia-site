@@ -1,10 +1,10 @@
 <svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
   <title id="title">Monograma LEONETIA</title>
   <desc id="desc">Monograma vectorial en forma de diamante con una L central y punto tecnologico.</desc>
-  <rect width="256" height="256" rx="36" fill="#111315"/>
+  <rect width="256" height="256" rx="36" fill="#F7F3EA"/>
   <path d="M112 40L40 112L112 184L184 112L112 40Z" stroke="#D8FF68" stroke-width="12" stroke-linejoin="round"/>
-  <path d="M112 40V184" stroke="#F7F3EA" stroke-width="12" stroke-linecap="round"/>
-  <path d="M72 144H156" stroke="#F7F3EA" stroke-width="12" stroke-linecap="round"/>
+  <path d="M112 40V184" stroke="#1F3D37" stroke-width="12" stroke-linecap="round"/>
+  <path d="M72 144H156" stroke="#1F3D37" stroke-width="12" stroke-linecap="round"/>
   <path d="M184 112H216" stroke="#36D6C9" stroke-width="12" stroke-linecap="round"/>
   <circle cx="226" cy="112" r="12" fill="#36D6C9"/>
 </svg>

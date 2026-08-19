@@ -1,14 +1,16 @@
 :root {
-  --graphite: #111315;
-  --carbon: #08090a;
+  --ink: #1f3d37;
+  --evergreen: #2f5a50;
+  --sage: #d8e4d2;
   --ivory: #f7f3ea;
+  --warm-white: #fffaf0;
   --mist: #e6e1d8;
   --steel: #9ea7a6;
   --lime: #d8ff68;
   --cyan: #36d6c9;
-  --line: rgba(247, 243, 234, 0.14);
-  --panel: rgba(247, 243, 234, 0.055);
-  --shadow: 0 24px 80px rgba(0, 0, 0, 0.32);
+  --line: rgba(31, 61, 55, 0.16);
+  --panel: rgba(255, 250, 240, 0.74);
+  --shadow: 0 24px 80px rgba(47, 90, 80, 0.18);
 }
 
 * {
@@ -21,10 +23,10 @@ html {
 
 body {
   margin: 0;
-  color: var(--ivory);
+  color: var(--ink);
   background:
-    radial-gradient(circle at 84% 6%, rgba(54, 214, 201, 0.14), transparent 28rem),
-    linear-gradient(135deg, var(--carbon), var(--graphite) 48%, #151817);
+    radial-gradient(circle at 84% 6%, rgba(216, 255, 104, 0.34), transparent 30rem),
+    linear-gradient(135deg, var(--warm-white), var(--ivory) 52%, var(--sage));
   font-family: "Inter", Arial, sans-serif;
   line-height: 1.5;
 }
@@ -44,7 +46,7 @@ a {
   gap: 24px;
   min-height: 76px;
   padding: 14px clamp(18px, 4vw, 56px);
-  background: rgba(8, 9, 10, 0.78);
+  background: rgba(255, 250, 240, 0.82);
   border-bottom: 1px solid var(--line);
   backdrop-filter: blur(18px);
 }
@@ -68,7 +70,7 @@ nav {
   display: flex;
   align-items: center;
   gap: clamp(14px, 3vw, 34px);
-  color: rgba(247, 243, 234, 0.76);
+  color: rgba(31, 61, 55, 0.74);
   font-size: 0.94rem;
   font-weight: 600;
 }
@@ -79,20 +81,20 @@ nav a,
 }
 
 nav a:hover {
-  color: var(--lime);
+  color: var(--evergreen);
 }
 
 .header-action {
   padding: 10px 16px;
-  border: 1px solid rgba(216, 255, 104, 0.58);
+  border: 1px solid rgba(47, 90, 80, 0.24);
   border-radius: 999px;
-  color: var(--lime);
+  color: var(--evergreen);
   font-size: 0.9rem;
   font-weight: 700;
 }
 
 .header-action:hover {
-  background: rgba(216, 255, 104, 0.12);
+  background: rgba(216, 255, 104, 0.35);
 }
 
 .hero {
@@ -114,7 +116,7 @@ nav a:hover {
 .eyebrow,
 .section-kicker {
   margin: 0 0 16px;
-  color: var(--cyan);
+  color: var(--evergreen);
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.16em;
@@ -147,13 +149,13 @@ h3 {
 }
 
 p {
-  color: rgba(247, 243, 234, 0.76);
+  color: rgba(31, 61, 55, 0.72);
 }
 
 .hero-subtitle {
   max-width: 740px;
   margin: 28px 0 0;
-  color: rgba(247, 243, 234, 0.82);
+  color: rgba(31, 61, 55, 0.76);
   font-size: clamp(1.15rem, 2.3vw, 1.55rem);
 }
 
@@ -178,12 +180,12 @@ p {
 
 .button.primary {
   background: var(--lime);
-  color: var(--carbon);
+  color: var(--ink);
 }
 
 .button.ghost {
-  border-color: rgba(247, 243, 234, 0.28);
-  color: var(--ivory);
+  border-color: rgba(31, 61, 55, 0.24);
+  color: var(--ink);
 }
 
 .button:hover {
@@ -194,18 +196,18 @@ p {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(8, 9, 10, 0.98) 0%, rgba(8, 9, 10, 0.72) 38%, rgba(8, 9, 10, 0.18) 72%),
-    linear-gradient(0deg, rgba(8, 9, 10, 0.88) 0%, rgba(8, 9, 10, 0.04) 42%),
+    linear-gradient(90deg, rgba(255, 250, 240, 0.98) 0%, rgba(255, 250, 240, 0.84) 42%, rgba(255, 250, 240, 0.18) 76%),
+    linear-gradient(0deg, rgba(247, 243, 234, 0.9) 0%, rgba(247, 243, 234, 0.05) 45%),
     url("assets/leonetia-hero-stand.png") center / cover no-repeat;
-  opacity: 0.92;
+  opacity: 0.86;
 }
 
 .stage-grid {
   position: absolute;
   inset: 16% -8% -22%;
   background-image:
-    linear-gradient(rgba(247, 243, 234, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(247, 243, 234, 0.08) 1px, transparent 1px);
+    linear-gradient(rgba(47, 90, 80, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(47, 90, 80, 0.12) 1px, transparent 1px);
   background-size: 64px 64px;
   transform: perspective(700px) rotateX(58deg);
   transform-origin: center bottom;
@@ -215,7 +217,7 @@ p {
 .light-panel {
   position: absolute;
   border: 1px solid rgba(247, 243, 234, 0.2);
-  background: linear-gradient(145deg, rgba(247, 243, 234, 0.08), rgba(247, 243, 234, 0.018));
+  background: linear-gradient(145deg, rgba(255, 250, 240, 0.72), rgba(216, 228, 210, 0.16));
   box-shadow: var(--shadow);
 }
 
@@ -268,7 +270,7 @@ p {
   gap: clamp(28px, 6vw, 90px);
   align-items: end;
   background: var(--ivory);
-  color: var(--graphite);
+  color: var(--ink);
 }
 
 .intro-section p {
@@ -284,7 +286,7 @@ p {
 
 .services-section {
   background: #f2eee5;
-  color: var(--graphite);
+  color: var(--ink);
 }
 
 .section-heading {
@@ -329,7 +331,7 @@ p {
   gap: 1px;
   padding-left: 0;
   padding-right: 0;
-  background: rgba(247, 243, 234, 0.12);
+  background: rgba(31, 61, 55, 0.12);
 }
 
 .work-item {
@@ -338,7 +340,7 @@ p {
   gap: clamp(24px, 5vw, 70px);
   align-items: center;
   padding: clamp(34px, 6vw, 78px) clamp(20px, 6vw, 84px);
-  background: var(--graphite);
+  background: var(--warm-white);
 }
 
 .work-visual {
@@ -347,18 +349,19 @@ p {
   background:
     linear-gradient(90deg, rgba(216, 255, 104, 0.28) 0 2px, transparent 2px 54px),
     linear-gradient(rgba(247, 243, 234, 0.12) 0 2px, transparent 2px 54px),
-    linear-gradient(145deg, rgba(54, 214, 201, 0.17), rgba(247, 243, 234, 0.04));
+    linear-gradient(145deg, rgba(54, 214, 201, 0.2), rgba(255, 250, 240, 0.72));
   background-size: 54px 54px, 54px 54px, auto;
 }
 
 .visual-brand {
   background:
     conic-gradient(from 45deg, rgba(216, 255, 104, 0.42), rgba(54, 214, 201, 0.14), rgba(247, 243, 234, 0.08), rgba(216, 255, 104, 0.42)),
-    linear-gradient(145deg, rgba(247, 243, 234, 0.12), rgba(247, 243, 234, 0.02));
+    linear-gradient(145deg, rgba(255, 250, 240, 0.72), rgba(216, 228, 210, 0.18));
 }
 
 .method-section {
-  background: var(--carbon);
+  background: var(--evergreen);
+  color: var(--warm-white);
 }
 
 .method-list {
@@ -374,7 +377,7 @@ p {
 .method-list li {
   min-height: 220px;
   padding: clamp(22px, 3vw, 34px);
-  background: var(--carbon);
+  background: rgba(255, 250, 240, 0.08);
 }
 
 .method-list strong {
@@ -386,7 +389,7 @@ p {
 }
 
 .method-list span {
-  color: rgba(247, 243, 234, 0.72);
+  color: rgba(255, 250, 240, 0.78);
 }
 
 .contact-section {
@@ -395,7 +398,7 @@ p {
   gap: 30px;
   align-items: end;
   background: var(--ivory);
-  color: var(--graphite);
+  color: var(--ink);
 }
 
 .contact-section h2 {
@@ -408,7 +411,7 @@ footer {
   justify-content: space-between;
   gap: 28px;
   padding: 30px clamp(20px, 6vw, 84px);
-  background: var(--carbon);
+  background: var(--evergreen);
   border-top: 1px solid var(--line);
 }
 
