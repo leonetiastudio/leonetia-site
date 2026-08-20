@@ -17,7 +17,7 @@ La idea visual central es una marca que construye escenarios claros para que otr
 
 Archivos:
 
-- `assets/leonetia-logo.svg`: version horizontal principal.
+- `assets/leonetia-logo-approved.png`: version horizontal principal aprobada.
 - `assets/leonetia-mark.svg`: monograma para favicon, redes, sellos, avatars y aplicaciones pequeñas.
 
 Usos recomendados:

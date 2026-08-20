@@ -5,7 +5,7 @@ Sitio institucional inicial para `leonetia.com`.
 ## Contenido
 
 - Identidad visual base.
-- Logo vectorial en SVG.
+- Logo aprobado en PNG.
 - Imagen hero generada para la primera pantalla.
 - Home estatica lista para GitHub Pages.
 - Guia de marca en `brand-guidelines.md`.
