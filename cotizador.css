@@ -645,7 +645,7 @@ textarea {
     display: grid;
     grid-template-columns: 1fr 210px;
     gap: 12px;
-    padding-bottom: 10px;
+    padding-bottom: 6px;
     border-bottom-width: 3px;
   }
 
@@ -675,7 +675,7 @@ textarea {
   .quote-meta {
     grid-template-columns: 1.4fr 1.6fr 0.8fr 0.8fr 0.55fr 0.65fr;
     gap: 8px;
-    margin: 12px 0;
+    margin: 8px 0;
   }
 
   .quote-meta label:nth-child(1),
@@ -706,11 +706,14 @@ textarea {
   }
 
   .quote-table th {
-    padding: 7px 5px;
-    background: var(--ink) !important;
-    color: #fff !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.28);
-    font-size: 8px;
+    padding: 8px 5px 6px;
+    background: #fff !important;
+    color: var(--ink) !important;
+    border-top: 4px solid var(--ink);
+    border-bottom: 3px solid var(--lime);
+    border-right: 1px solid rgba(31, 61, 55, 0.24);
+    font-size: 8.5px;
+    font-weight: 900;
     letter-spacing: 0.04em;
   }
 
