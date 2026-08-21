@@ -306,7 +306,9 @@ textarea {
 
 .quote-table-wrap {
   overflow-x: auto;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(31, 61, 55, 0.28);
+  border-top: 5px solid var(--lime);
+  background: #fff;
 }
 
 .quote-table {
@@ -317,17 +319,21 @@ textarea {
 }
 
 .quote-table th {
-  padding: 12px 10px;
-  background: var(--evergreen);
+  padding: 15px 12px;
+  background: var(--ink);
   color: var(--warm-white);
-  font-size: 0.82rem;
+  border-right: 1px solid rgba(255, 250, 240, 0.18);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  line-height: 1.12;
   text-transform: uppercase;
 }
 
 .quote-table td {
-  padding: 10px;
-  border-top: 1px solid var(--line);
-  border-right: 1px solid var(--line);
+  padding: 12px;
+  border-top: 1px solid rgba(31, 61, 55, 0.16);
+  border-right: 1px solid rgba(31, 61, 55, 0.16);
   vertical-align: middle;
 }
 
@@ -459,6 +465,13 @@ textarea {
   white-space: nowrap;
 }
 
+.item-qty,
+.item-price,
+.money {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
 .row-action-col {
   width: 84px;
 }
@@ -585,6 +598,8 @@ textarea {
 
   body {
     background: #fff;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
   }
 
   .no-print,
@@ -670,11 +685,16 @@ textarea {
   }
 
   .quote-table th {
-    padding: 5px 4px;
+    padding: 7px 5px;
+    background: var(--ink) !important;
+    color: #fff !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.28);
+    font-size: 8px;
+    letter-spacing: 0.04em;
   }
 
   .quote-table td {
-    padding: 5px 4px;
+    padding: 6px 5px;
   }
 
   .description-col {
