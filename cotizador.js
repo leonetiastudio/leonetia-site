@@ -1,8 +1,4 @@
 const els = {
-  gate: document.querySelector("#accessGate"),
-  password: document.querySelector("#accessPassword"),
-  unlock: document.querySelector("#unlockAccess"),
-  accessMessage: document.querySelector("#accessMessage"),
   body: document.querySelector("#itemsBody"),
   template: document.querySelector("#itemTemplate"),
   ivaRate: document.querySelector("#ivaRate"),
@@ -21,7 +17,10 @@ const els = {
 const storageKey = "leonetiaQuoteDraft";
 const archiveKey = "leonetiaQuoteArchive";
 const accessKey = "leonetiaQuoteAccess";
-const accessHash = "9d0743b84758e207f99d6ddac7308280b2ae65477e46613fc7814b7f0e8edb48";
+
+if (sessionStorage.getItem(accessKey) !== "ok") {
+  window.location.replace("acceso.html");
+}
 
 const examples = {
   stand: {
@@ -73,23 +72,6 @@ function updateTotals() {
   els.subtotal.textContent = money(subtotal);
   els.iva.textContent = money(iva);
   els.total.textContent = money(subtotal + iva);
-}
-
-async function sha256(text) {
-  const bytes = new TextEncoder().encode(text);
-  const hash = await crypto.subtle.digest("SHA-256", bytes);
-  return [...new Uint8Array(hash)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
-}
-
-async function unlock() {
-  const hash = await sha256(els.password.value);
-  if (hash !== accessHash) {
-    els.accessMessage.textContent = "Contraseña incorrecta.";
-    return;
-  }
-  sessionStorage.setItem(accessKey, "ok");
-  document.body.classList.remove("locked");
-  els.accessMessage.textContent = "";
 }
 
 async function imageToDataUrl(src) {
@@ -305,12 +287,3 @@ document.querySelector("#printQuote").addEventListener("click", () => {
 const draft = localStorage.getItem(storageKey);
 loadQuote(draft ? JSON.parse(draft) : {});
 renderArchive();
-
-els.unlock.addEventListener("click", unlock);
-els.password.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") unlock();
-});
-
-if (sessionStorage.getItem(accessKey) === "ok") {
-  document.body.classList.remove("locked");
-}

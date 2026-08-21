@@ -16,23 +16,14 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap"
       rel="stylesheet"
     />
+    <script>
+      if (sessionStorage.getItem("leonetiaQuoteAccess") !== "ok") {
+        window.location.replace("acceso.html");
+      }
+    </script>
     <link rel="stylesheet" href="cotizador.css" />
   </head>
-  <body class="locked">
-    <section class="access-gate no-print" id="accessGate" aria-label="Acceso privado">
-      <div class="access-panel">
-        <img src="assets/leonetia-logo-approved.png" alt="LEONETIA" />
-        <p>Acceso privado</p>
-        <h1>Sistema de cotizaciones</h1>
-        <label>
-          Contraseña
-          <input id="accessPassword" type="password" autocomplete="current-password" placeholder="Ingresa la contraseña" />
-        </label>
-        <button type="button" class="primary-action" id="unlockAccess">Entrar</button>
-        <span id="accessMessage" role="status"></span>
-      </div>
-    </section>
-
+  <body>
     <header class="quote-toolbar">
       <a class="quote-brand" href="index.html" aria-label="Volver al sitio de LEONETIA">
         <img src="assets/leonetia-logo-approved.png" alt="LEONETIA" />

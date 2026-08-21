@@ -8,7 +8,7 @@ Sitio institucional inicial para `leonetia.com`.
 - Logo aprobado en PNG.
 - Imagen hero generada para la primera pantalla.
 - Home estatica lista para GitHub Pages.
-- Cotizador editable en `cotizador.html`.
+- Acceso privado en `acceso.html` y cotizador editable en `cotizador.html`.
 - Guia de marca en `brand-guidelines.md`.
 
 ## Publicacion En GitHub Pages

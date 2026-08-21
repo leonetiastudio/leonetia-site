@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Acceso | LEONETIA Estudio Creativo</title>
+    <meta name="description" content="Acceso privado al sistema de cotizaciones de LEONETIA." />
+    <meta name="theme-color" content="#F7F3EA" />
+    <link rel="icon" href="assets/leonetia-mark.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="cotizador.css" />
+  </head>
+  <body class="access-page">
+    <main class="access-gate" aria-label="Acceso privado">
+      <section class="access-panel">
+        <img src="assets/leonetia-logo-approved.png" alt="LEONETIA" />
+        <p>Acceso privado</p>
+        <h1>Sistema de cotizaciones</h1>
+        <label>
+          Contraseña
+          <input id="accessPassword" type="password" autocomplete="current-password" placeholder="Ingresa la contraseña" />
+        </label>
+        <button type="button" class="primary-action" id="unlockAccess">Entrar</button>
+        <a class="access-back" href="index.html">Volver al sitio</a>
+        <span id="accessMessage" role="status"></span>
+      </section>
+    </main>
+    <script src="acceso.js"></script>
+  </body>
+</html>
