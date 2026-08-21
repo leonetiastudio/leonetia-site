@@ -352,15 +352,35 @@ textarea {
   text-align: center;
 }
 
-.image-picker {
+.image-actions {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.image-picker,
+.paste-image {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-height: 38px;
   padding: 8px 12px;
+  color: var(--ink);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.image-picker {
   border: 1px dashed rgba(31, 61, 55, 0.36);
   border-radius: 10px;
   background: var(--ivory);
+  cursor: pointer;
+}
+
+.paste-image {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--lime);
   cursor: pointer;
 }
 
@@ -369,6 +389,15 @@ textarea {
   width: 1px;
   height: 1px;
   opacity: 0;
+}
+
+.paste-hint {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: none;
 }
 
 .item-image {

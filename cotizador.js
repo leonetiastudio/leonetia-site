@@ -102,14 +102,47 @@ async function imageToDataUrl(src) {
   });
 }
 
+function fileToDataUrl(file) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.readAsDataURL(file);
+  });
+}
+
 function setRowImage(row, src) {
   const img = row.querySelector(".item-image");
   img.src = src || "";
   img.classList.toggle("has-image", Boolean(src));
 }
 
+function findImageFileFromClipboard(event) {
+  const items = [...(event.clipboardData?.items || [])];
+  const imageItem = items.find((item) => item.type.startsWith("image/"));
+  return imageItem?.getAsFile() || null;
+}
+
+async function pasteImageFromClipboard(row) {
+  try {
+    if (navigator.clipboard?.read) {
+      const clipboardItems = await navigator.clipboard.read();
+      for (const clipboardItem of clipboardItems) {
+        const imageType = clipboardItem.types.find((type) => type.startsWith("image/"));
+        if (!imageType) continue;
+        const blob = await clipboardItem.getType(imageType);
+        setRowImage(row, await fileToDataUrl(blob));
+        return;
+      }
+    }
+    alert("No encontre una imagen en el portapapeles. Tambien puedes pegar con Cmd/Ctrl + V sobre la fila.");
+  } catch {
+    alert("El navegador no permitio leer el portapapeles. Haz clic en la fila y usa Cmd/Ctrl + V.");
+  }
+}
+
 function addRow(data = {}) {
   const row = els.template.content.firstElementChild.cloneNode(true);
+  row.tabIndex = 0;
   row.querySelector(".item-description").value = data.description || "";
   row.querySelector(".item-qty").value = data.qty ?? 1;
   row.querySelector(".item-price").value = data.price ?? 0;
@@ -122,9 +155,18 @@ function addRow(data = {}) {
   row.querySelector(".item-image-input").addEventListener("change", (event) => {
     const [file] = event.target.files;
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => setRowImage(row, reader.result);
-    reader.readAsDataURL(file);
+    fileToDataUrl(file).then((src) => setRowImage(row, src));
+  });
+
+  row.querySelector(".paste-image").addEventListener("click", () => {
+    pasteImageFromClipboard(row);
+  });
+
+  row.addEventListener("paste", async (event) => {
+    const file = findImageFileFromClipboard(event);
+    if (!file) return;
+    event.preventDefault();
+    setRowImage(row, await fileToDataUrl(file));
   });
 
   row.querySelector(".remove-image").addEventListener("click", () => {

@@ -168,10 +168,14 @@
           <textarea class="item-description" placeholder="Descripcion de la partida"></textarea>
         </td>
         <td class="image-cell">
-          <label class="image-picker no-print">
-            <input class="item-image-input" type="file" accept="image/*" />
-            <span>Cargar imagen</span>
-          </label>
+          <div class="image-actions no-print">
+            <label class="image-picker">
+              <input class="item-image-input" type="file" accept="image/*" />
+              <span>Cargar</span>
+            </label>
+            <button type="button" class="paste-image">Pegar</button>
+          </div>
+          <small class="paste-hint no-print">Tambien acepta Cmd/Ctrl + V en esta fila</small>
           <img class="item-image" alt="Imagen de partida" />
           <button type="button" class="text-action no-print remove-image">Quitar imagen</button>
         </td>
