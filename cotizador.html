@@ -164,9 +164,16 @@
               <input class="item-image-input" type="file" accept="image/*" />
               <span>Cargar</span>
             </label>
+            <label class="image-picker camera-picker">
+              <input class="item-camera-input" type="file" accept="image/*" capture="environment" />
+              <span>Foto/Galeria</span>
+            </label>
             <button type="button" class="paste-image">Pegar</button>
           </div>
-          <small class="paste-hint no-print">Tambien acepta Cmd/Ctrl + V en esta fila</small>
+          <div class="paste-target no-print" contenteditable="true" role="button" tabindex="0">
+            Pega aqui la imagen con Cmd/Ctrl + V o toque prolongado
+          </div>
+          <small class="paste-hint no-print">En movil, Foto/Galeria suele ser mas confiable.</small>
           <img class="item-image" alt="Imagen de partida" />
           <button type="button" class="text-action no-print remove-image">Quitar imagen</button>
         </td>

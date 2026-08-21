@@ -354,6 +354,7 @@ textarea {
 
 .image-actions {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 8px;
 }
@@ -389,6 +390,29 @@ textarea {
   width: 1px;
   height: 1px;
   opacity: 0;
+}
+
+.paste-target {
+  display: none;
+  margin-top: 8px;
+  padding: 10px;
+  border: 2px dashed rgba(31, 61, 55, 0.32);
+  border-radius: 10px;
+  background: rgba(216, 228, 210, 0.42);
+  color: var(--evergreen);
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1.25;
+  outline: none;
+}
+
+.paste-target.is-active {
+  display: block;
+}
+
+.paste-target:focus {
+  border-color: var(--cyan);
+  background: rgba(54, 214, 201, 0.12);
 }
 
 .paste-hint {

@@ -22,6 +22,8 @@ if (sessionStorage.getItem(accessKey) !== "ok") {
   window.location.replace("acceso.html");
 }
 
+let activeImageRow = null;
+
 const examples = {
   stand: {
     description:
@@ -104,7 +106,23 @@ function findImageFileFromClipboard(event) {
   return imageItem?.getAsFile() || null;
 }
 
+function showPasteTarget(row, message) {
+  activeImageRow = row;
+  const target = row.querySelector(".paste-target");
+  target.textContent = message || "Pega aqui la imagen con Cmd/Ctrl + V o toque prolongado";
+  target.classList.add("is-active");
+  target.focus();
+}
+
+async function applyClipboardFile(row, file) {
+  if (!file) return false;
+  setRowImage(row, await fileToDataUrl(file));
+  row.querySelector(".paste-target").classList.remove("is-active");
+  return true;
+}
+
 async function pasteImageFromClipboard(row) {
+  activeImageRow = row;
   try {
     if (navigator.clipboard?.read) {
       const clipboardItems = await navigator.clipboard.read();
@@ -112,13 +130,13 @@ async function pasteImageFromClipboard(row) {
         const imageType = clipboardItem.types.find((type) => type.startsWith("image/"));
         if (!imageType) continue;
         const blob = await clipboardItem.getType(imageType);
-        setRowImage(row, await fileToDataUrl(blob));
+        await applyClipboardFile(row, blob);
         return;
       }
     }
-    alert("No encontre una imagen en el portapapeles. Tambien puedes pegar con Cmd/Ctrl + V sobre la fila.");
+    showPasteTarget(row, "No encontre imagen directa. Pega aqui con Cmd/Ctrl + V o toque prolongado.");
   } catch {
-    alert("El navegador no permitio leer el portapapeles. Haz clic en la fila y usa Cmd/Ctrl + V.");
+    showPasteTarget(row, "El navegador bloqueo el portapapeles. Pega aqui con Cmd/Ctrl + V o toque prolongado.");
   }
 }
 
@@ -140,6 +158,12 @@ function addRow(data = {}) {
     fileToDataUrl(file).then((src) => setRowImage(row, src));
   });
 
+  row.querySelector(".item-camera-input").addEventListener("change", (event) => {
+    const [file] = event.target.files;
+    if (!file) return;
+    fileToDataUrl(file).then((src) => setRowImage(row, src));
+  });
+
   row.querySelector(".paste-image").addEventListener("click", () => {
     pasteImageFromClipboard(row);
   });
@@ -148,11 +172,23 @@ function addRow(data = {}) {
     const file = findImageFileFromClipboard(event);
     if (!file) return;
     event.preventDefault();
-    setRowImage(row, await fileToDataUrl(file));
+    await applyClipboardFile(row, file);
+  });
+
+  row.querySelector(".paste-target").addEventListener("paste", async (event) => {
+    const file = findImageFileFromClipboard(event);
+    if (!file) return;
+    event.preventDefault();
+    await applyClipboardFile(row, file);
+  });
+
+  row.addEventListener("focusin", () => {
+    activeImageRow = row;
   });
 
   row.querySelector(".remove-image").addEventListener("click", () => {
     row.querySelector(".item-image-input").value = "";
+    row.querySelector(".item-camera-input").value = "";
     setRowImage(row, "");
   });
 
@@ -287,3 +323,11 @@ document.querySelector("#printQuote").addEventListener("click", () => {
 const draft = localStorage.getItem(storageKey);
 loadQuote(draft ? JSON.parse(draft) : {});
 renderArchive();
+
+document.addEventListener("paste", async (event) => {
+  if (!activeImageRow) return;
+  const file = findImageFileFromClipboard(event);
+  if (!file) return;
+  event.preventDefault();
+  await applyClipboardFile(activeImageRow, file);
+});
