@@ -1,4 +1,8 @@
 const els = {
+  gate: document.querySelector("#accessGate"),
+  password: document.querySelector("#accessPassword"),
+  unlock: document.querySelector("#unlockAccess"),
+  accessMessage: document.querySelector("#accessMessage"),
   body: document.querySelector("#itemsBody"),
   template: document.querySelector("#itemTemplate"),
   ivaRate: document.querySelector("#ivaRate"),
@@ -15,6 +19,9 @@ const els = {
 };
 
 const storageKey = "leonetiaQuoteDraft";
+const archiveKey = "leonetiaQuoteArchive";
+const accessKey = "leonetiaQuoteAccess";
+const accessHash = "9d0743b84758e207f99d6ddac7308280b2ae65477e46613fc7814b7f0e8edb48";
 
 const examples = {
   stand: {
@@ -66,6 +73,23 @@ function updateTotals() {
   els.subtotal.textContent = money(subtotal);
   els.iva.textContent = money(iva);
   els.total.textContent = money(subtotal + iva);
+}
+
+async function sha256(text) {
+  const bytes = new TextEncoder().encode(text);
+  const hash = await crypto.subtle.digest("SHA-256", bytes);
+  return [...new Uint8Array(hash)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+async function unlock() {
+  const hash = await sha256(els.password.value);
+  if (hash !== accessHash) {
+    els.accessMessage.textContent = "Contraseña incorrecta.";
+    return;
+  }
+  sessionStorage.setItem(accessKey, "ok");
+  document.body.classList.remove("locked");
+  els.accessMessage.textContent = "";
 }
 
 async function imageToDataUrl(src) {
@@ -164,6 +188,53 @@ function saveDraft() {
   }
 }
 
+function archiveItems() {
+  try {
+    return JSON.parse(localStorage.getItem(archiveKey) || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function renderArchive() {
+  const list = document.querySelector("#archiveList");
+  const items = archiveItems();
+  list.innerHTML = "";
+
+  if (!items.length) {
+    const empty = document.createElement("span");
+    empty.textContent = "Sin propuestas guardadas";
+    list.append(empty);
+    return;
+  }
+
+  items.slice(0, 8).forEach((entry) => {
+    const load = document.createElement("button");
+    load.type = "button";
+    load.textContent = entry.label;
+    load.addEventListener("click", () => loadQuote(entry.data));
+    list.append(load);
+  });
+}
+
+function saveArchive() {
+  const data = quoteData(true);
+  const labelParts = [data.folio, data.client || "Cliente", data.project || "Proyecto"].filter(Boolean);
+  const entry = {
+    id: Date.now(),
+    label: labelParts.join(" | "),
+    data,
+  };
+  try {
+    const items = [entry, ...archiveItems()].slice(0, 20);
+    localStorage.setItem(archiveKey, JSON.stringify(items));
+    renderArchive();
+    alert("Propuesta guardada en el historial local.");
+  } catch {
+    alert("No se pudo guardar con imagenes. Prueba guardar el PDF o reducir imagenes.");
+  }
+}
+
 function resetQuote() {
   if (!confirm("¿Limpiar esta cotizacion?")) return;
   localStorage.removeItem(storageKey);
@@ -180,6 +251,7 @@ document.querySelector("#addItem").addEventListener("click", () => addRow());
 document.querySelector("#addStandPack").addEventListener("click", () => addExample("stand"));
 document.querySelector("#addPromoPack").addEventListener("click", () => addExample("promo"));
 document.querySelector("#saveQuote").addEventListener("click", saveDraft);
+document.querySelector("#saveArchive").addEventListener("click", saveArchive);
 document.querySelector("#resetQuote").addEventListener("click", resetQuote);
 document.querySelector("#printQuote").addEventListener("click", () => {
   updateTotals();
@@ -190,3 +262,13 @@ document.querySelector("#printQuote").addEventListener("click", () => {
 
 const draft = localStorage.getItem(storageKey);
 loadQuote(draft ? JSON.parse(draft) : {});
+renderArchive();
+
+els.unlock.addEventListener("click", unlock);
+els.password.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") unlock();
+});
+
+if (sessionStorage.getItem(accessKey) === "ok") {
+  document.body.classList.remove("locked");
+}

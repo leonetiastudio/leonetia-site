@@ -24,6 +24,69 @@ body {
   font-family: Inter, Arial, sans-serif;
 }
 
+body.locked {
+  overflow: hidden;
+}
+
+.access-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 22px;
+  background:
+    radial-gradient(circle at 86% 12%, rgba(54, 214, 201, 0.28), transparent 24rem),
+    linear-gradient(135deg, var(--warm-white), var(--ivory) 55%, var(--sage));
+}
+
+.access-panel {
+  width: min(520px, 100%);
+  padding: clamp(28px, 5vw, 44px);
+  background: rgba(255, 250, 240, 0.96);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.access-panel img {
+  width: min(300px, 78vw);
+  height: auto;
+}
+
+.access-panel p,
+.quote-archive p {
+  margin: 24px 0 8px;
+  color: #168e86;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.access-panel h1 {
+  margin: 0 0 22px;
+  font-family: "Space Grotesk", Inter, Arial, sans-serif;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  line-height: 0.98;
+}
+
+.access-panel .primary-action {
+  width: 100%;
+  margin-top: 14px;
+}
+
+#accessMessage {
+  display: block;
+  min-height: 22px;
+  margin-top: 12px;
+  color: #a14343;
+  font-weight: 800;
+}
+
+body:not(.locked) .access-gate {
+  display: none;
+}
+
 button,
 input,
 select,
@@ -90,6 +153,44 @@ textarea {
   gap: 10px;
   max-width: 920px;
   margin-bottom: 28px;
+}
+
+.quote-archive {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 22px;
+  padding: 18px;
+  background: rgba(255, 250, 240, 0.76);
+  border: 1px solid var(--line);
+}
+
+.quote-archive p {
+  margin-top: 0;
+}
+
+.quote-archive span {
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.archive-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.archive-list button {
+  min-height: 38px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--warm-white);
+  color: var(--ink);
+  font-weight: 800;
+  cursor: pointer;
 }
 
 .quote-intro p {
@@ -425,8 +526,8 @@ textarea {
 
 @media print {
   @page {
-    size: A4 landscape;
-    margin: 8mm;
+    size: letter landscape;
+    margin: 7mm;
   }
 
   body {
@@ -451,6 +552,48 @@ textarea {
     box-shadow: none;
   }
 
+  .document-head {
+    display: grid;
+    grid-template-columns: 1fr 210px;
+    gap: 12px;
+    padding-bottom: 10px;
+    border-bottom-width: 3px;
+  }
+
+  .document-head img {
+    width: 220px;
+  }
+
+  .document-head p {
+    margin-top: 3px;
+    font-size: 10px;
+  }
+
+  .quote-title {
+    min-width: 0;
+    gap: 5px;
+  }
+
+  .quote-title strong {
+    font-size: 24px;
+  }
+
+  label {
+    gap: 3px;
+    font-size: 8px;
+  }
+
+  .quote-meta {
+    grid-template-columns: 1.4fr 1.6fr 0.8fr 0.8fr 0.55fr 0.65fr;
+    gap: 8px;
+    margin: 12px 0;
+  }
+
+  .quote-meta label:nth-child(1),
+  .quote-meta label:nth-child(2) {
+    grid-column: span 1;
+  }
+
   input,
   select,
   textarea {
@@ -469,26 +612,45 @@ textarea {
 
   .quote-table {
     min-width: 0;
-    font-size: 10px;
+    table-layout: fixed;
+    font-size: 9px;
   }
 
   .quote-table th {
-    padding: 7px;
+    padding: 5px 4px;
   }
 
   .quote-table td {
-    padding: 7px;
+    padding: 5px 4px;
+  }
+
+  .description-col {
+    width: 28%;
+  }
+
+  .image-col {
+    width: 16%;
   }
 
   .description-cell textarea {
-    min-height: 78px;
-    font-size: 10px;
+    min-height: 48px;
+    font-size: 9px;
+    line-height: 1.2;
+  }
+
+  .item-qty,
+  .item-price {
+    min-width: 0;
+  }
+
+  .money {
+    min-width: 0;
   }
 
   .item-image {
     display: block;
-    width: 110px;
-    height: 82px;
+    width: 82px;
+    height: 58px;
   }
 
   .item-image:not(.has-image) {
@@ -496,7 +658,28 @@ textarea {
   }
 
   .quote-bottom {
-    grid-template-columns: 1fr 270px;
-    gap: 14px;
+    grid-template-columns: 1fr 230px;
+    gap: 10px;
+    margin-top: 10px;
+    page-break-inside: avoid;
+  }
+
+  .notes-field textarea {
+    min-height: 56px;
+    font-size: 9px;
+  }
+
+  .totals-panel div {
+    padding: 7px 9px;
+  }
+
+  .totals-panel strong {
+    font-size: 12px;
+  }
+
+  .quote-footer {
+    margin-top: 10px;
+    padding-top: 8px;
+    font-size: 9px;
   }
 }

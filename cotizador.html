@@ -18,13 +18,28 @@
     />
     <link rel="stylesheet" href="cotizador.css" />
   </head>
-  <body>
+  <body class="locked">
+    <section class="access-gate no-print" id="accessGate" aria-label="Acceso privado">
+      <div class="access-panel">
+        <img src="assets/leonetia-logo-approved.png" alt="LEONETIA" />
+        <p>Acceso privado</p>
+        <h1>Sistema de cotizaciones</h1>
+        <label>
+          Contraseña
+          <input id="accessPassword" type="password" autocomplete="current-password" placeholder="Ingresa la contraseña" />
+        </label>
+        <button type="button" class="primary-action" id="unlockAccess">Entrar</button>
+        <span id="accessMessage" role="status"></span>
+      </div>
+    </section>
+
     <header class="quote-toolbar">
       <a class="quote-brand" href="index.html" aria-label="Volver al sitio de LEONETIA">
         <img src="assets/leonetia-logo-approved.png" alt="LEONETIA" />
       </a>
       <div class="toolbar-actions no-print">
         <button type="button" class="secondary-action" id="saveQuote">Guardar borrador</button>
+        <button type="button" class="secondary-action" id="saveArchive">Guardar propuesta</button>
         <button type="button" class="secondary-action" id="resetQuote">Limpiar</button>
         <button type="button" class="primary-action" id="printQuote">Generar PDF</button>
       </div>
@@ -32,12 +47,20 @@
 
     <main class="quote-shell">
       <section class="quote-intro no-print" aria-label="Descripcion del cotizador">
-        <p>Cotizador editable</p>
+        <p>Acceso privado</p>
         <h1>Arma propuestas con imagenes, N partidas y totales automaticos.</h1>
         <span>
-          Funciona en GitHub Pages porque todo corre en tu navegador. Para entregar al cliente,
-          usa “Generar PDF” y guarda desde la ventana de impresion.
+          Este modulo corre en GitHub Pages y guarda borradores en este navegador. Para entregar
+          al cliente, usa “Generar PDF” y guarda desde la ventana de impresion.
         </span>
+      </section>
+
+      <section class="quote-archive no-print" aria-label="Propuestas guardadas">
+        <div>
+          <p>Propuestas guardadas</p>
+          <span>Historial local de este navegador.</span>
+        </div>
+        <div id="archiveList" class="archive-list"></div>
       </section>
 
       <section class="quote-document" id="quoteDocument" aria-label="Cotizacion">
