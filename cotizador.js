@@ -106,6 +106,43 @@ function findImageFileFromClipboard(event) {
   return imageItem?.getAsFile() || null;
 }
 
+function clipboardText(event, type) {
+  try {
+    return event.clipboardData?.getData(type) || "";
+  } catch {
+    return "";
+  }
+}
+
+function imageSourceFromHtml(html) {
+  if (!html) return "";
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  return doc.querySelector("img")?.src || "";
+}
+
+function imageSourceFromText(text) {
+  const value = text.trim();
+  if (!value) return "";
+  if (value.startsWith("data:image/")) return value;
+  try {
+    const url = new URL(value);
+    if (url.protocol === "http:" || url.protocol === "https:") return url.href;
+  } catch {
+    return "";
+  }
+  return "";
+}
+
+async function urlToDataUrl(src) {
+  if (!src) return "";
+  if (src.startsWith("data:image/")) return src;
+  const response = await fetch(src, { mode: "cors" });
+  if (!response.ok) throw new Error("No se pudo leer la imagen.");
+  const blob = await response.blob();
+  if (!blob.type.startsWith("image/")) throw new Error("La URL no es una imagen.");
+  return fileToDataUrl(blob);
+}
+
 function showPasteTarget(row, message) {
   activeImageRow = row;
   const target = row.querySelector(".paste-target");
@@ -121,6 +158,17 @@ async function applyClipboardFile(row, file) {
   return true;
 }
 
+async function applyClipboardSource(row, src) {
+  if (!src) return false;
+  try {
+    setRowImage(row, await urlToDataUrl(src));
+  } catch {
+    setRowImage(row, src);
+  }
+  row.querySelector(".paste-target").classList.remove("is-active");
+  return true;
+}
+
 async function pasteImageFromClipboard(row) {
   activeImageRow = row;
   try {
@@ -128,12 +176,41 @@ async function pasteImageFromClipboard(row) {
       const clipboardItems = await navigator.clipboard.read();
       for (const clipboardItem of clipboardItems) {
         const imageType = clipboardItem.types.find((type) => type.startsWith("image/"));
-        if (!imageType) continue;
-        const blob = await clipboardItem.getType(imageType);
-        await applyClipboardFile(row, blob);
+        if (imageType) {
+          const blob = await clipboardItem.getType(imageType);
+          await applyClipboardFile(row, blob);
+          return;
+        }
+
+        if (clipboardItem.types.includes("text/html")) {
+          const htmlBlob = await clipboardItem.getType("text/html");
+          const html = await htmlBlob.text();
+          const src = imageSourceFromHtml(html);
+          if (src) {
+            await applyClipboardSource(row, src);
+            return;
+          }
+        }
+
+        if (clipboardItem.types.includes("text/plain")) {
+          const textBlob = await clipboardItem.getType("text/plain");
+          const src = imageSourceFromText(await textBlob.text());
+          if (src) {
+            await applyClipboardSource(row, src);
+            return;
+          }
+        }
+      }
+    }
+
+    if (navigator.clipboard?.readText) {
+      const src = imageSourceFromText(await navigator.clipboard.readText());
+      if (src) {
+        await applyClipboardSource(row, src);
         return;
       }
     }
+
     showPasteTarget(row, "No encontre imagen directa. Pega aqui con Cmd/Ctrl + V o toque prolongado.");
   } catch {
     showPasteTarget(row, "El navegador bloqueo el portapapeles. Pega aqui con Cmd/Ctrl + V o toque prolongado.");
@@ -170,16 +247,38 @@ function addRow(data = {}) {
 
   row.addEventListener("paste", async (event) => {
     const file = findImageFileFromClipboard(event);
-    if (!file) return;
+    if (file) {
+      event.preventDefault();
+      await applyClipboardFile(row, file);
+      return;
+    }
+
+    const src = imageSourceFromHtml(clipboardText(event, "text/html")) || imageSourceFromText(clipboardText(event, "text/plain"));
+    if (!src) return;
     event.preventDefault();
-    await applyClipboardFile(row, file);
+    try {
+      await applyClipboardSource(row, src);
+    } catch {
+      showPasteTarget(row, "La imagen copiada es una referencia que el navegador no puede leer. Usa Cargar o Foto/Galeria.");
+    }
   });
 
   row.querySelector(".paste-target").addEventListener("paste", async (event) => {
     const file = findImageFileFromClipboard(event);
-    if (!file) return;
+    if (file) {
+      event.preventDefault();
+      await applyClipboardFile(row, file);
+      return;
+    }
+
+    const src = imageSourceFromHtml(clipboardText(event, "text/html")) || imageSourceFromText(clipboardText(event, "text/plain"));
+    if (!src) return;
     event.preventDefault();
-    await applyClipboardFile(row, file);
+    try {
+      await applyClipboardSource(row, src);
+    } catch {
+      showPasteTarget(row, "La imagen copiada es una referencia que el navegador no puede leer. Usa Cargar o Foto/Galeria.");
+    }
   });
 
   row.addEventListener("focusin", () => {
@@ -327,7 +426,18 @@ renderArchive();
 document.addEventListener("paste", async (event) => {
   if (!activeImageRow) return;
   const file = findImageFileFromClipboard(event);
-  if (!file) return;
+  if (file) {
+    event.preventDefault();
+    await applyClipboardFile(activeImageRow, file);
+    return;
+  }
+
+  const src = imageSourceFromHtml(clipboardText(event, "text/html")) || imageSourceFromText(clipboardText(event, "text/plain"));
+  if (!src) return;
   event.preventDefault();
-  await applyClipboardFile(activeImageRow, file);
+  try {
+    await applyClipboardSource(activeImageRow, src);
+  } catch {
+    showPasteTarget(activeImageRow, "La imagen copiada es una referencia que el navegador no puede leer. Usa Cargar o Foto/Galeria.");
+  }
 });
