@@ -100,9 +100,19 @@ function setRowImage(row, src) {
   img.classList.toggle("has-image", Boolean(src));
 }
 
+function hasRowImage(row) {
+  return row.querySelector(".item-image").classList.contains("has-image");
+}
+
+function setPasteStatus(row, message, isError = false) {
+  const status = row.querySelector(".paste-status");
+  status.textContent = message || "";
+  status.classList.toggle("is-error", isError);
+}
+
 function findImageFileFromClipboard(event) {
   const items = [...(event.clipboardData?.items || [])];
-  const imageItem = items.find((item) => item.type.startsWith("image/"));
+  const imageItem = items.find((item) => item.type?.startsWith("image/") || item.kind === "file");
   return imageItem?.getAsFile() || null;
 }
 
@@ -117,7 +127,13 @@ function clipboardText(event, type) {
 function imageSourceFromHtml(html) {
   if (!html) return "";
   const doc = new DOMParser().parseFromString(html, "text/html");
-  return doc.querySelector("img")?.src || "";
+  const img = doc.querySelector("img");
+  if (!img) return "";
+  if (img.src) return img.src;
+  if (img.currentSrc) return img.currentSrc;
+  const srcset = img.getAttribute("srcset");
+  if (srcset) return srcset.split(",").at(-1).trim().split(" ")[0];
+  return img.getAttribute("data-src") || img.getAttribute("data-original") || "";
 }
 
 function imageSourceFromText(text) {
@@ -148,13 +164,37 @@ function showPasteTarget(row, message) {
   const target = row.querySelector(".paste-target");
   target.textContent = message || "Pega aqui la imagen con Cmd/Ctrl + V o toque prolongado";
   target.classList.add("is-active");
+  setPasteStatus(row, "Esperando pegado manual en esta caja.");
   target.focus();
+}
+
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function tryNativePaste(row) {
+  const target = row.querySelector(".paste-target");
+  target.textContent = "";
+  target.classList.add("is-active");
+  target.focus();
+  try {
+    document.execCommand("paste");
+    await wait(160);
+    return hasRowImage(row);
+  } catch {
+    return false;
+  }
 }
 
 async function applyClipboardFile(row, file) {
   if (!file) return false;
+  if (file.type && !file.type.startsWith("image/")) {
+    setPasteStatus(row, `El archivo pegado no parece imagen: ${file.type}`, true);
+    return false;
+  }
   setRowImage(row, await fileToDataUrl(file));
   row.querySelector(".paste-target").classList.remove("is-active");
+  setPasteStatus(row, "Imagen pegada correctamente.");
   return true;
 }
 
@@ -166,14 +206,24 @@ async function applyClipboardSource(row, src) {
     setRowImage(row, src);
   }
   row.querySelector(".paste-target").classList.remove("is-active");
+  setPasteStatus(row, "Imagen pegada correctamente.");
   return true;
 }
 
 async function pasteImageFromClipboard(row) {
   activeImageRow = row;
+  setPasteStatus(row, "Leyendo portapapeles...");
+
+  if (await tryNativePaste(row)) {
+    setPasteStatus(row, "Imagen pegada correctamente.");
+    return;
+  }
+
   try {
     if (navigator.clipboard?.read) {
       const clipboardItems = await navigator.clipboard.read();
+      const typeList = clipboardItems.flatMap((item) => item.types).join(", ");
+      if (typeList) setPasteStatus(row, `Portapapeles detectado: ${typeList}`);
       for (const clipboardItem of clipboardItems) {
         const imageType = clipboardItem.types.find((type) => type.startsWith("image/"));
         if (imageType) {
@@ -211,9 +261,10 @@ async function pasteImageFromClipboard(row) {
       }
     }
 
-    showPasteTarget(row, "No encontre imagen directa. Pega aqui con Cmd/Ctrl + V o toque prolongado.");
-  } catch {
-    showPasteTarget(row, "El navegador bloqueo el portapapeles. Pega aqui con Cmd/Ctrl + V o toque prolongado.");
+    showPasteTarget(row, "No encontre imagen directa. Haz clic aqui y pega con Cmd/Ctrl + V o toque prolongado.");
+  } catch (error) {
+    setPasteStatus(row, `Bloqueado por navegador: ${error.name || "sin permiso"}.`, true);
+    showPasteTarget(row, "El navegador bloqueo el boton. Haz clic aqui y pega con Cmd/Ctrl + V o toque prolongado.");
   }
 }
 
@@ -278,6 +329,16 @@ function addRow(data = {}) {
       await applyClipboardSource(row, src);
     } catch {
       showPasteTarget(row, "La imagen copiada es una referencia que el navegador no puede leer. Usa Cargar o Foto/Galeria.");
+    }
+  });
+
+  row.querySelector(".paste-target").addEventListener("input", async (event) => {
+    const src = imageSourceFromText(event.currentTarget.textContent || "");
+    if (!src) return;
+    try {
+      await applyClipboardSource(row, src);
+    } catch {
+      setPasteStatus(row, "No pude leer esa URL como imagen.", true);
     }
   });
 

@@ -385,10 +385,17 @@ textarea {
 }
 
 .paste-image {
+  appearance: none;
+  -webkit-appearance: none;
   border: 1px solid var(--line);
   border-radius: 10px;
   background: var(--lime);
   cursor: pointer;
+}
+
+.paste-image:focus-visible {
+  outline: 3px solid rgba(54, 214, 201, 0.45);
+  outline-offset: 2px;
 }
 
 .image-picker input {
@@ -428,6 +435,20 @@ textarea {
   font-size: 0.72rem;
   font-weight: 700;
   text-transform: none;
+}
+
+.paste-status {
+  display: block;
+  min-height: 18px;
+  margin-top: 6px;
+  color: #168e86;
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: none;
+}
+
+.paste-status.is-error {
+  color: #a14343;
 }
 
 .item-image {
