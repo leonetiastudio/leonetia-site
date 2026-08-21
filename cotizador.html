@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cotizador | LEONETIA Estudio Creativo</title>
+    <meta
+      name="description"
+      content="Cotizador editable de LEONETIA para stands, promocionales, publicidad y produccion visual."
+    />
+    <meta name="theme-color" content="#F7F3EA" />
+    <link rel="icon" href="assets/leonetia-mark.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="cotizador.css" />
+  </head>
+  <body>
+    <header class="quote-toolbar">
+      <a class="quote-brand" href="index.html" aria-label="Volver al sitio de LEONETIA">
+        <img src="assets/leonetia-logo-approved.png" alt="LEONETIA" />
+      </a>
+      <div class="toolbar-actions no-print">
+        <button type="button" class="secondary-action" id="saveQuote">Guardar borrador</button>
+        <button type="button" class="secondary-action" id="resetQuote">Limpiar</button>
+        <button type="button" class="primary-action" id="printQuote">Generar PDF</button>
+      </div>
+    </header>
+
+    <main class="quote-shell">
+      <section class="quote-intro no-print" aria-label="Descripcion del cotizador">
+        <p>Cotizador editable</p>
+        <h1>Arma propuestas con imagenes, N partidas y totales automaticos.</h1>
+        <span>
+          Funciona en GitHub Pages porque todo corre en tu navegador. Para entregar al cliente,
+          usa “Generar PDF” y guarda desde la ventana de impresion.
+        </span>
+      </section>
+
+      <section class="quote-document" id="quoteDocument" aria-label="Cotizacion">
+        <div class="document-head">
+          <div>
+            <img src="assets/leonetia-logo-approved.png" alt="LEONETIA" />
+            <p>Estudio Creativo | Stands | Publicidad | Promocionales</p>
+          </div>
+          <div class="quote-title">
+            <strong>Cotizacion</strong>
+            <label>
+              Folio
+              <input id="quoteFolio" type="text" value="LEO-0001" />
+            </label>
+          </div>
+        </div>
+
+        <div class="quote-meta">
+          <label>
+            Cliente
+            <input id="clientName" type="text" placeholder="Nombre del cliente o empresa" />
+          </label>
+          <label>
+            Proyecto
+            <input id="projectName" type="text" placeholder="Stand, promocionales, publicidad..." />
+          </label>
+          <label>
+            Fecha
+            <input id="quoteDate" type="date" />
+          </label>
+          <label>
+            Vigencia
+            <input id="quoteValidity" type="text" value="15 dias" />
+          </label>
+          <label>
+            IVA %
+            <input id="ivaRate" type="number" min="0" step="0.01" value="16" />
+          </label>
+          <label>
+            Moneda
+            <select id="currency">
+              <option value="MXN">MXN</option>
+              <option value="USD">USD</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="items-actions no-print">
+          <button type="button" class="primary-action" id="addItem">Agregar partida</button>
+          <button type="button" class="secondary-action" id="addStandPack">Ejemplo stand</button>
+          <button type="button" class="secondary-action" id="addPromoPack">Ejemplo promocionales</button>
+        </div>
+
+        <div class="quote-table-wrap">
+          <table class="quote-table">
+            <thead>
+              <tr>
+                <th class="description-col">Descripcion</th>
+                <th class="image-col">Imagen</th>
+                <th>Piezas</th>
+                <th>Precio unitario</th>
+                <th>Subtotal</th>
+                <th>IVA</th>
+                <th>Total</th>
+                <th class="no-print row-action-col"></th>
+              </tr>
+            </thead>
+            <tbody id="itemsBody"></tbody>
+          </table>
+        </div>
+
+        <div class="quote-bottom">
+          <label class="notes-field">
+            Observaciones
+            <textarea id="quoteNotes">Precios sujetos a cambios segun alcance final, materiales, tiempos de entrega y aprobacion de artes.</textarea>
+          </label>
+
+          <aside class="totals-panel" aria-label="Totales">
+            <div>
+              <span>Subtotal</span>
+              <strong id="subtotalAmount">$0.00</strong>
+            </div>
+            <div>
+              <span>IVA</span>
+              <strong id="ivaAmount">$0.00</strong>
+            </div>
+            <div class="grand-total">
+              <span>Total</span>
+              <strong id="totalAmount">$0.00</strong>
+            </div>
+          </aside>
+        </div>
+
+        <footer class="quote-footer">
+          <span>ventas@leonetia.com</span>
+          <span>contacto@leonetia.com</span>
+          <span>leonetia.com</span>
+        </footer>
+      </section>
+    </main>
+
+    <template id="itemTemplate">
+      <tr class="quote-row">
+        <td class="description-cell">
+          <textarea class="item-description" placeholder="Descripcion de la partida"></textarea>
+        </td>
+        <td class="image-cell">
+          <label class="image-picker no-print">
+            <input class="item-image-input" type="file" accept="image/*" />
+            <span>Cargar imagen</span>
+          </label>
+          <img class="item-image" alt="Imagen de partida" />
+          <button type="button" class="text-action no-print remove-image">Quitar imagen</button>
+        </td>
+        <td><input class="item-qty" type="number" min="0" step="1" value="1" /></td>
+        <td><input class="item-price" type="number" min="0" step="0.01" value="0" /></td>
+        <td class="money item-subtotal">$0.00</td>
+        <td class="money item-iva">$0.00</td>
+        <td class="money item-total">$0.00</td>
+        <td class="no-print row-action-col">
+          <button type="button" class="delete-row" aria-label="Eliminar partida">Eliminar</button>
+        </td>
+      </tr>
+    </template>
+
+    <script src="cotizador.js"></script>
+  </body>
+</html>
